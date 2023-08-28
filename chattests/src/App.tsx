@@ -1,10 +1,13 @@
 import { useState } from "react";
 import "./App.css";
+import openai from "openai";
 
 export default function App() {
   const [userInput, setUserInput] = useState<string>("");
   const [message, setMessage] = useState(null);
+
   const getMessages = async () => {
+    const unitTestPrompt = `I have the following file, write me a unit test using jest. Format the test with a new line for each function. Here is the file: ${userInput}`;
     const options = {
       method: "POST",
       headers: {
@@ -14,7 +17,8 @@ export default function App() {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: userInput }],
+
+        messages: [{ role: "user", content: unitTestPrompt }],
       }),
     };
     try {
@@ -30,12 +34,24 @@ export default function App() {
     }
   };
 
-  console.log(message);
   return (
     <div>
-      <section style={{ display: "flex", flexDirection: "row" }}>
+      <button
+        style={{
+          background: "Green",
+          color: "white",
+          fontSize: 24,
+          padding: "12px 20px",
+          border: "1px solid white",
+          marginBottom: 20,
+        }}
+        onClick={getMessages}
+      >
+        Click To Run Tests
+      </button>
+      <section style={{ display: "flex", flexDirection: "row", flex: 1 }}>
         <textarea
-          style={{ minWidth: 250 }}
+          style={{ minWidth: 250, flex: 1, padding: 20 }}
           cols={30}
           rows={19}
           value={userInput}
@@ -44,30 +60,20 @@ export default function App() {
         <section
           style={{
             minWidth: 250,
+            flex: 1,
             marginLeft: 50,
-            padding: 10,
-            height: 300,
+            padding: 20,
+            height: "auto",
             backgroundColor: "white",
             border: "3px solid white",
             color: "black",
           }}
         >
-          <p style={{ color: "black" }}>{message?.content ?? ""}</p>
+          <p style={{ color: "black", textAlign: "left" }}>
+            {message?.content ?? ""}
+          </p>
         </section>
       </section>
-      <button
-        style={{
-          background: "red",
-          color: "white",
-          height: 100,
-          width: 300,
-          border: "1px solid white",
-          marginTop: 20,
-        }}
-        onClick={getMessages}
-      >
-        Click
-      </button>
     </div>
   );
 }
