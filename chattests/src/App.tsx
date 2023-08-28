@@ -7,7 +7,7 @@ export default function App() {
   const [message, setMessage] = useState(null);
 
   const getMessages = async () => {
-    const unitTestPrompt = `I have the following file, write me a unit test using jest. Format the test with a new line for each function. Here is the file: ${userInput}`;
+    const unitTestPrompt = `I have the following file, write me a component test in typescript with full type entities and use cypress. Format the test. Here is the file: ${userInput}`;
     const options = {
       method: "POST",
       headers: {
