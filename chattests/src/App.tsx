@@ -7,7 +7,7 @@ export default function App() {
   const [message, setMessage] = useState(null);
 
   const getMessages = async () => {
-    const unitTestPrompt = `I have the following file, you are an experienced developer, write me a component test in typescript with full type entities and use jest. Include edge case scenarios. Generate a table with the test cases. Here is the file: ${userInput}`;
+    const unitTestPrompt = `I want you to wrap your answer in <code></code> code blocks. Write me component tests using jest. Include edge case scenarios. Here is the file: ${userInput}`;
     const options = {
       method: "POST",
       headers: {
@@ -32,6 +32,16 @@ export default function App() {
       console.error(error);
     }
   };
+
+  // Check if the content has code block
+  const hasCodeBlock = content.includes("```");
+  if (hasCodeBlock) {
+    // If the content has code block, wrap it in a <pre><code> element
+    const codeContent = content.replace(
+      /```([\s\S]+?)```/g,
+      "</p><pre><code>$1</code></pre><p>"
+    );
+  }
 
   return (
     <div>
@@ -68,7 +78,9 @@ export default function App() {
             color: "black",
           }}
         >
-          {message?.content ?? ""}
+          <pre className="language-jsx">
+            <code style={{ textAlign: "left" }}>{hasCodeBlock}</code>
+          </pre>
         </section>
       </section>
     </div>
