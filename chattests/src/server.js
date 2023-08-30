@@ -37,6 +37,7 @@ App.post('/completions', async (req, res) => {
             top_p: 1,
             frequency_penalty: 0.5,
             presence_penalty: 0,
+            streaming: true,
           });
         res.send(completion.data)
     } catch (error){

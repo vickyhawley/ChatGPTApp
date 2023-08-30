@@ -7,7 +7,7 @@ export default function App() {
   const [message, setMessage] = useState(null);
 
   const getMessages = async () => {
-    const unitTestPrompt = `I have the following file, write me a component test in typescript with full type entities and use cypress. Format the test. Here is the file: ${userInput}`;
+    const unitTestPrompt = `I have the following file, you are an experienced developer, write me a component test in typescript with full type entities and use jest. Include edge case scenarios. Generate a table with the test cases. Here is the file: ${userInput}`;
     const options = {
       method: "POST",
       headers: {
@@ -17,7 +17,6 @@ export default function App() {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-
         messages: [{ role: "user", content: unitTestPrompt }],
       }),
     };
@@ -51,7 +50,7 @@ export default function App() {
       </button>
       <section style={{ display: "flex", flexDirection: "row", flex: 1 }}>
         <textarea
-          style={{ minWidth: 250, flex: 1, padding: 20 }}
+          style={{ minWidth: 550, flex: 1, padding: 20 }}
           cols={30}
           rows={19}
           value={userInput}
@@ -59,7 +58,7 @@ export default function App() {
         ></textarea>
         <section
           style={{
-            minWidth: 250,
+            minWidth: 550,
             flex: 1,
             marginLeft: 50,
             padding: 20,
@@ -69,9 +68,7 @@ export default function App() {
             color: "black",
           }}
         >
-          <p style={{ color: "black", textAlign: "left" }}>
-            {message?.content ?? ""}
-          </p>
+          {message?.content ?? ""}
         </section>
       </section>
     </div>
