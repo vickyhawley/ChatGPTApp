@@ -12,6 +12,11 @@ API_KEY='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'
 
 App.post('/completions', async (req, res) => {
     const unitTestPrompt = `I have the following file, write me a unit test using jest. Here is the file: ${userInput}`;
+     // Check if the content has code block
+     const hasCodeBlock = content.includes("```");
+     if (hasCodeBlock) {
+       // If the content has code block, wrap it in a <pre><code> element
+       const codeContent = content.replace(/```([\s\S]+?)```/g, '</p><pre><code>$1</code></pre><p>');
   const options = {
     method: 'POST',
     headers: {
@@ -39,9 +44,11 @@ App.post('/completions', async (req, res) => {
             presence_penalty: 0,
             streaming: true,
           });
+          
         res.send(completion.data)
     } catch (error){
         console.error(error)
     }
+    
 })
 app.listen(PORT, () => console.log('Your server is running on PORT ' + PORT))
