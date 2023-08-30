@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 import openai from "openai";
+import { CopyBlock } from "react-code-blocks";
 
-export default function App() {
+export default function App({ text }) {
   const [userInput, setUserInput] = useState<string>("");
   const [message, setMessage] = useState(null);
 
@@ -33,16 +34,6 @@ export default function App() {
     }
   };
 
-  // Check if the content has code block
-  const hasCodeBlock = content.includes("```");
-  if (hasCodeBlock) {
-    // If the content has code block, wrap it in a <pre><code> element
-    const codeContent = content.replace(
-      /```([\s\S]+?)```/g,
-      "</p><pre><code>$1</code></pre><p>"
-    );
-  }
-
   return (
     <div>
       <button
@@ -60,7 +51,7 @@ export default function App() {
       </button>
       <section style={{ display: "flex", flexDirection: "row", flex: 1 }}>
         <textarea
-          style={{ minWidth: 550, flex: 1, padding: 20 }}
+          style={{ minWidth: 250, flex: 1, padding: 20 }}
           cols={30}
           rows={19}
           value={userInput}
@@ -68,19 +59,23 @@ export default function App() {
         ></textarea>
         <section
           style={{
-            minWidth: 550,
             flex: 1,
             marginLeft: 50,
-            padding: 20,
+            minWidth: 250,
             height: "auto",
             backgroundColor: "white",
             border: "3px solid white",
             color: "black",
           }}
         >
-          <pre className="language-jsx">
-            <code style={{ textAlign: "left" }}>{hasCodeBlock}</code>
-          </pre>
+          <p style={{textAlign: 'left'}}><CopyBlock
+            language={"javascript"}
+            text={message?.content ?? ""}
+            theme
+            codeBlock
+            {...message?.content ?? ''}
+          />
+          </p>
         </section>
       </section>
     </div>
